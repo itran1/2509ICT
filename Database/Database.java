@@ -41,15 +41,11 @@ public class Database {
     }
     //Adds a customer to the database
     public void addCustomer(String number, String address, String financial){
-        Customer newCustomer = new Customer(number, address, financial);
-        
         try {
-            PrintWriter output = new PrintWriter(new FileWriter(database,true));
-            String[] details = newCustomer.getDetails(); //Add customers detail to an array
-            
-            for(int i = 0; i<details.length; i++){
-                output.println(details[i]);
-            }
+            PrintWriter output = new PrintWriter(new FileWriter(database,true)); //Opens a new PrintWriter in append mode
+            output.println(number);
+            output.println(address);
+            output.println(financial);
             
             output.close(); //Closes the PrintWriter
             
