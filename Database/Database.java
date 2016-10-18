@@ -14,7 +14,7 @@ public class Database {
             
             try {
                 database.createNewFile(); //Create a new DB if one doesn't already exist
-                menuDB.createNewFile();
+                menuDB.createNewFile(); //Create a new menuDB if one doesn't already exist
             } catch (IOException e){}
             
         }
@@ -22,7 +22,7 @@ public class Database {
     
     //Adds a new item to the menu
     public void addItem(String name, int price){
-        int size = getMenuSize();
+        int size = getMenuSize(); //Check the size of the database to know the next available index
         
         try {
             PrintWriter output = new PrintWriter(new FileWriter(menuDB,true)); //Opens a new PrintWriter in append mode
@@ -33,6 +33,7 @@ public class Database {
         } catch (FileNotFoundException e){} catch (IOException e){}
             
     }
+    
     //Gets an item from the DB
     public Item getItem(int index){
         try {
@@ -40,10 +41,10 @@ public class Database {
             int currIndex;
             
             while(in.hasNextLine()){
-                currIndex = Integer.parseInt(in.nextLine());
+                currIndex = Integer.parseInt(in.nextLine()); //Sets the current index to the index read from the file (for comparison against the function input)
                 
                 if(currIndex == index){
-                    Item found = new Item(in.nextLine(), Integer.parseInt(in.nextLine()));
+                    Item found = new Item(in.nextLine(), Integer.parseInt(in.nextLine())); //if the index is found, make a new item object and return it
                     return found;
                 } else {
                     //Ignore data
@@ -55,33 +56,36 @@ public class Database {
         
         return null; //If the item doesn't exist, return null
     }
+    
     //Changes a menu item
     public void updatePrice(int index, int newPrice){
         File temp = new File("update.temp");
         
         try{
-            PrintWriter output = new PrintWriter(temp); 
+            PrintWriter output = new PrintWriter(temp); //write to the temp file
             Scanner in = new Scanner(menuDB); //Read from the menuDB
             String update; //The price to update
-            int nextNum;
+            int currIndex;
             
             temp.createNewFile(); //Create the temp file for storage
             
+            //Write the new updated database to a temporary file
             while(in.hasNextLine()){
-                nextNum = Integer.parseInt(in.nextLine());
-                output.println(nextNum);
+                currIndex = Integer.parseInt(in.nextLine());
+                output.println(currIndex);
                 output.println(in.nextLine());
                 update = in.nextLine();
                 
-                if(nextNum == index){
+                if(currIndex == index){
                     update = ""+newPrice;
                 }
                 
                 output.println(update);
                 
             }
-            
             output.close();
+            
+            //Update the DB with the temp file
             output = new PrintWriter(menuDB);
             in = new Scanner(temp);
             
@@ -89,13 +93,54 @@ public class Database {
                 output.println(in.nextLine());
             }
             output.close();
-            temp.delete(); //Delete the temporary file
         } catch(IOException e){}
+        
+        temp.delete(); //Delete the temporary file
     }
+    
     //Removes a menu item
     public void removeItem(int index){
+        File temp = new File("update.temp");
         
+        try {
+            PrintWriter output = new PrintWriter(temp);
+            Scanner input = new Scanner(menuDB);
+            
+            //Remove the item from the database and save into a temp file
+            while(input.hasNextLine()){
+                int currIndex = Integer.parseInt(input.nextLine());
+                
+                if(currIndex == index){
+                    //Throw
+                    input.nextLine();
+                    input.nextLine();
+                } else if(currIndex > index){
+                    output.println(currIndex-1); //Lower the index as 1 item has been removed
+                    output.println(input.nextLine());
+                    output.println(input.nextLine());
+                } else {
+                    output.println(currIndex);
+                    output.println(input.nextLine());
+                    output.println(input.nextLine());
+                }
+                
+            }
+            output.close();
+            
+            //Update the DB with the temp file
+            output = new PrintWriter(menuDB);
+            input = new Scanner(temp);
+            
+            while(input.hasNextLine()){
+                output.println(input.nextLine());
+            }
+            output.close();
+            
+        } catch(FileNotFoundException e){}
+        
+        temp.delete();
     }
+    
     //Gets the size of the menuDB
     public int getMenuSize(){
         int size = 0;
@@ -116,6 +161,7 @@ public class Database {
             return 0;
         }
     }
+    
     //Returns a customer if they exist, otherwise returns a null value
     public Customer getCustomer(String number){
         try{
@@ -129,7 +175,8 @@ public class Database {
                     break;
                 }
                 scan.nextLine();
-            } 
+            }
+            
             if(scanResult){
                 Customer found = new Customer(scan.next(number), scan.next(), scan.next());
                 return found;
@@ -141,6 +188,7 @@ public class Database {
             return null;
         }
     }
+    
     //Adds a customer to the database
     public void addCustomer(String number, String address, String financial){
         try {
@@ -156,6 +204,7 @@ public class Database {
         } catch (FileNotFoundException e){} catch (IOException e){}
         
     }
+    
     //Gets the current size of the customer database
     public int getSize(){
         try {

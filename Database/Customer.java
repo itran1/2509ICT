@@ -9,6 +9,7 @@ public class Customer {
         this.financial = financial;
     }
     
+    //Returns the details as an array
     public String[] getDetails(){
         String[] combine = {phone, address, financial};
         return combine;
