@@ -23,6 +23,7 @@ public class UIController implements ActionListener {
 	};
 	
 	private String currentScreen;
+	private StyleSettings styleSettings;
 	
 	public UIController() {
 		
@@ -32,8 +33,12 @@ public class UIController implements ActionListener {
 		// discuss with group
 		// could just load them on the other screens when needed
 		
+		styleSettings = new StyleSettings();
+		
 		views = new JPanel[] {
-				(JPanel)new MainMenu()
+				(JPanel)new MainMenu(styleSettings),
+				(JPanel)new MainMenu(styleSettings), // replace with order screen
+				(JPanel)new MenuItems(styleSettings)
 				// other screens added here
 		};
 		
@@ -49,11 +54,14 @@ public class UIController implements ActionListener {
 		frame = new JFrame("Ordering System");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
+		frame.setResizable(false);
 		
 		cardLayout.addLayoutComponent(((MainMenu)views[0]), screens[0]);
+		cardLayout.addLayoutComponent(((MenuItems)views[2]), screens[2]);
 		// add other screens here
 		
 		cardPanel.add(((MainMenu)views[0]));
+		cardPanel.add(((MenuItems)views[2]));
 		// add other screens here
 		
 		currentScreen = screens[0];
@@ -61,11 +69,17 @@ public class UIController implements ActionListener {
 		
 		frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand());
+		
+		if(e.getActionCommand().equals(screens[2])) {
+			currentScreen = screens[2];
+			cardLayout.show(cardPanel, currentScreen);
+		}
 		
 	}
 

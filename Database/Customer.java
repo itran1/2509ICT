@@ -1,3 +1,5 @@
+package Database;
+
 public class Customer {
     private String phone;
     private String address;

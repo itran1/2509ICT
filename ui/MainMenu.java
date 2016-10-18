@@ -10,14 +10,17 @@ public class MainMenu extends JPanel {
 	public JButton editMenuItems;
 	public JButton viewDailyReport;
 	
-	public MainMenu() {
+	private StyleSettings styleSettings;
+	
+	public MainMenu(StyleSettings styleSettings) {
 		super();
 		setLayout(new GridBagLayout());
+		this.styleSettings = styleSettings;
 		
-		Font headingFont = new Font("Comic Sans MS", Font.BOLD, 36);
+		Font headingFont = new Font(this.styleSettings.getDefaultFont(), Font.BOLD, 36);
 		JLabel l = new JLabel("Ordering System");
 		l.setFont(headingFont);
-		l.setHorizontalAlignment(JLabel.CENTER);
+		l.setAlignmentX(Component.CENTER_ALIGNMENT);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -25,28 +28,27 @@ public class MainMenu extends JPanel {
 		c.gridheight = 1;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.PAGE_START;
+		c.insets = new Insets(20, 0, 0, 0);
 		add(l, c);
 		
-		Font screenFont = new Font("Comic Sans MS", Font.PLAIN, 24);
+		Font screenFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, 24);
 		l = new JLabel("Main Menu");
 		l.setFont(screenFont);
-		l.setHorizontalAlignment(JLabel.CENTER);
+		l.setAlignmentX(Component.CENTER_ALIGNMENT);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 1;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.PAGE_START;
+		c.anchor = GridBagConstraints.PAGE_END;
 		add(l, c);
 		
 		newOrder = new JButton("New Order");
-		Font buttonFont = new Font("Comic Sans MS", Font.PLAIN, 14);
+		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize() + 2);
 		newOrder.setFont(buttonFont);
-		newOrder.setActionCommand("neworder");
+		newOrder.setActionCommand("NewOrder");
 		Dimension buttonSize = new Dimension(150, 50);
-		newOrder.setMinimumSize(buttonSize);
-		newOrder.setMaximumSize(buttonSize);
 		newOrder.setPreferredSize(buttonSize);
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -56,13 +58,12 @@ public class MainMenu extends JPanel {
 		c.weighty = 1.0;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 0, 0, 20);
 		add(newOrder, c);
 		
 		editMenuItems = new JButton("Edit Menu Items");
 		editMenuItems.setFont(buttonFont);
-		editMenuItems.setActionCommand("editmenuitems");
-		editMenuItems.setMinimumSize(buttonSize);
-		editMenuItems.setMaximumSize(buttonSize);
+		editMenuItems.setActionCommand("EditMenuItems");
 		editMenuItems.setPreferredSize(buttonSize);
 		c = new GridBagConstraints();
 		c.gridx = 1;
@@ -75,9 +76,7 @@ public class MainMenu extends JPanel {
 		
 		viewDailyReport = new JButton("View Daily Report");
 		viewDailyReport.setFont(buttonFont);
-		viewDailyReport.setActionCommand("viewdailyreport");
-		viewDailyReport.setMinimumSize(buttonSize);
-		viewDailyReport.setMaximumSize(buttonSize);
+		viewDailyReport.setActionCommand("ViewDailyReport");
 		viewDailyReport.setPreferredSize(buttonSize);
 		c = new GridBagConstraints();
 		c.gridx = 2;
@@ -86,6 +85,7 @@ public class MainMenu extends JPanel {
 		c.gridheight = 1;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 20, 0, 0);
 		add(viewDailyReport, c);
 	}
 }
