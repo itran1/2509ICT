@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Database {
     private File database;
@@ -55,6 +56,24 @@ public class Database {
         } catch(FileNotFoundException e){}
         
         return null; //If the item doesn't exist, return null
+    }
+    
+    //Gets all menu items from the menuDB
+    public Item[] getAllItems(){
+        
+        try{
+            Scanner in = new Scanner(menuDB);
+            ArrayList<Item> items = new ArrayList<Item>();
+            
+            while(in.hasNextLine()){
+                in.nextLine(); //Throw
+                items.add(new Item(in.nextLine(), Integer.parseInt(in.nextLine())));
+            }
+            
+            return items.toArray(new Item[items.size()]);
+        } catch(FileNotFoundException e){}
+        
+        return null;
     }
     
     //Changes a menu item
