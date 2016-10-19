@@ -3,8 +3,6 @@ package Database;
 public class Item {
     private String name;
     private int price;		// in cents
-    private int number;		// menu item number
-    						// need to add get/set and update the calls in Database.java
     
     public Item(String name, int price){
         this.name = name;
