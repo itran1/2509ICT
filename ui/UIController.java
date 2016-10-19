@@ -20,7 +20,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 	
 	private final static String[] screens = {
 		"MainMenu",
-		"Order",
+		"NewOrder",
 		"EditMenuItems",
 		"DailyReport"
 	};
@@ -29,12 +29,6 @@ public class UIController implements ActionListener, ListSelectionListener {
 	private StyleSettings styleSettings;
 	
 	public UIController() {
-		
-		//this.model = new Model();
-		// get stuff from database
-		// maybe dont need to load all customers and menu items yet
-		// discuss with group
-		// could just load them on the other screens when needed
 		
 		db = new Database.Database();
 		Database.Item[] menu = db.getAllItems();
@@ -45,7 +39,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		
 		views = new JPanel[] {
 				(JPanel)new MainMenu(styleSettings),
-				(JPanel)new MainMenu(styleSettings), // replace with order screen
+				(JPanel)new NewOrder(styleSettings, menu),
 				(JPanel)new MenuItems(styleSettings, menu)
 				// other screens added here
 		};
@@ -53,6 +47,10 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((MainMenu)views[0]).newOrder.addActionListener(this);
 		((MainMenu)views[0]).editMenuItems.addActionListener(this);
 		((MainMenu)views[0]).viewDailyReport.addActionListener(this);
+		
+		((NewOrder)views[1]).backToMainMenu.addActionListener(this);
+		((NewOrder)views[1]).takeaway.addActionListener(this);
+		((NewOrder)views[1]).homeDelivery.addActionListener(this);
 		
 		((MenuItems)views[2]).backToMainMenu.addActionListener(this);
 		((MenuItems)views[2]).createNewMenuItem.addActionListener(this);
@@ -73,10 +71,12 @@ public class UIController implements ActionListener, ListSelectionListener {
 		frame.setResizable(false);
 		
 		cardLayout.addLayoutComponent(((MainMenu)views[0]), screens[0]);
+		cardLayout.addLayoutComponent(((NewOrder)views[1]), screens[1]);
 		cardLayout.addLayoutComponent(((MenuItems)views[2]), screens[2]);
 		// add other screens here
 		
 		cardPanel.add(((MainMenu)views[0]));
+		cardPanel.add(((NewOrder)views[1]));
 		cardPanel.add(((MenuItems)views[2]));
 		// add other screens here
 		
@@ -112,7 +112,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		// If the "Back" button is clicked from the edit menu screen,
 		// load the main menu screen
 		if(cmd.equals("BackToMainMenu")) {
-			((MenuItems)views[2]).cleanup();
+			((MenuItems)views[2]).cleanUp();
 			currentScreen = screens[0];
 			cardLayout.show(cardPanel, currentScreen);
 		}
@@ -212,6 +212,24 @@ public class UIController implements ActionListener, ListSelectionListener {
 				((MenuItems)views[2]).creatingNew = false;
 				((MenuItems)views[2]).menuList.setEnabled(true);
 				((MenuItems)views[2]).updateIndexes(db.getAllItems());
+			}
+		}
+		
+		// If the "New Order" button is clicked from the main menu,
+		// load the new order screen
+		if(cmd.equals(screens[1])) {
+			currentScreen = screens[1];
+			cardLayout.show(cardPanel, currentScreen);
+		}
+		
+		// If the "Back" button is clicked from the new order screen,
+		// produce a confirmation dialog
+		if(cmd.equals("BackToMainMenuFromOrderTypePanel")) {
+			int response = ((NewOrder)views[1]).dialog.backToMain();
+			if(response == JOptionPane.YES_OPTION) {
+				((NewOrder)views[1]).cleanUp();
+				currentScreen = screens[0];
+				cardLayout.show(cardPanel, currentScreen);
 			}
 		}
 	}

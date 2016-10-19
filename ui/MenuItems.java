@@ -28,7 +28,7 @@ public class MenuItems extends JPanel {
 		this.cancelMenuItem.setEnabled(enabled);
 	}
 	
-	public void cleanup() {
+	public void cleanUp() {
 		enableEditing(false);
 		this.menuList.clearSelection();
 		this.nameTextField.setText("");
