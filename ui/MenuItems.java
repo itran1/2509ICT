@@ -8,6 +8,33 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class MenuItems extends JPanel {
 	
+	public void updateIndexes(Database.Item[] menu) {
+		
+		
+		menuListModel.removeAllElements();
+		if(menu.length > 0) {
+			for(int i = 0; i < menu.length; i++) {
+				menuListModel.addElement(new Database.Item(i, menu[i].getName(), menu[i].getPrice()));
+			}
+		}
+	}
+	
+	public void enableEditing(boolean enabled) {
+		this.nameLabel.setEnabled(enabled);
+		this.nameTextField.setEnabled(enabled);
+		this.priceLabel.setEnabled(enabled);
+		this.priceTextField.setEnabled(enabled);
+		this.saveMenuItem.setEnabled(enabled);
+		this.cancelMenuItem.setEnabled(enabled);
+	}
+	
+	public void cleanup() {
+		enableEditing(false);
+		this.menuList.clearSelection();
+		this.nameTextField.setText("");
+		this.priceTextField.setText("");
+	}
+	
 	private void createNameLabel(JPanel parent) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -17,10 +44,11 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		Font textFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
-		JLabel l = new JLabel("Name:");
-		l.setFont(textFont);
-		l.setAlignmentX(Component.LEFT_ALIGNMENT);
-		parent.add(l, c);
+		nameLabel = new JLabel("Name:");
+		nameLabel.setFont(textFont);
+		nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		nameLabel.setEnabled(false);
+		parent.add(nameLabel, c);
 	}
 	
 	private void createNameTextField(JPanel parent) {
@@ -33,10 +61,11 @@ public class MenuItems extends JPanel {
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.insets = new Insets(0, 0, 20, 0);
 		Font textFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
-		JTextField nameTextField = new JTextField();
+		nameTextField = new JTextField();
 		nameTextField.setFont(textFont);
 		nameTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		nameTextField.setPreferredSize(textFieldSize);
+		nameTextField.setEnabled(false);
 		parent.add(nameTextField, c);
 	}
 	
@@ -49,10 +78,11 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		Font textFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
-		JLabel l = new JLabel("Price $(xx.xx):");
-		l.setFont(textFont);
-		l.setAlignmentX(Component.LEFT_ALIGNMENT);
-		parent.add(l, c);
+		priceLabel = new JLabel("Price $(xx.xx):");
+		priceLabel.setFont(textFont);
+		priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		priceLabel.setEnabled(false);
+		parent.add(priceLabel, c);
 	}
 	
 	private void createPriceTextField(JPanel parent) {
@@ -64,10 +94,11 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		Font textFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
-		JTextField priceTextField = new JTextField();
+		priceTextField = new JTextField();
 		priceTextField.setFont(textFont);
 		priceTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		priceTextField.setPreferredSize(textFieldSize);
+		priceTextField.setEnabled(false);
 		parent.add(priceTextField, c);
 	}
 	
@@ -80,12 +111,13 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(20, 20, 0, 0);
-		JButton saveMenuItem = new JButton("Save");
+		saveMenuItem = new JButton("Save");
 		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
 		saveMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
 		saveMenuItem.setFont(buttonFont);
 		saveMenuItem.setActionCommand("SaveMenuItem");
 		saveMenuItem.setPreferredSize(largeButtonSize);
+		saveMenuItem.setEnabled(false);
 		parent.add(saveMenuItem, c);
 	}
 	
@@ -98,12 +130,13 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(20, 20, 0, 0);
-		JButton cancelMenuItem = new JButton("Cancel");
+		cancelMenuItem = new JButton("Cancel");
 		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
 		cancelMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cancelMenuItem.setFont(buttonFont);
 		cancelMenuItem.setActionCommand("CancelMenuItem");
 		cancelMenuItem.setPreferredSize(largeButtonSize);
+		cancelMenuItem.setEnabled(false);
 		parent.add(cancelMenuItem, c);
 	}
 	
@@ -149,7 +182,7 @@ public class MenuItems extends JPanel {
 		c.anchor = GridBagConstraints.LAST_LINE_END;
 		c.weighty = 0.40;
 		c.insets = new Insets(20, 20, 0, 0);
-		JButton createNewMenuItem = new JButton("Create New");
+		createNewMenuItem = new JButton("Create New");
 		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
 		createNewMenuItem.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		createNewMenuItem.setFont(buttonFont);
@@ -168,13 +201,14 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0, 20, 0, 0);
-		JButton createNewMenuItem = new JButton("Edit");
+		editMenuItem = new JButton("Edit");
 		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
-		createNewMenuItem.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		createNewMenuItem.setFont(buttonFont);
-		createNewMenuItem.setActionCommand("EditMenuItem");
-		createNewMenuItem.setPreferredSize(largeButtonSize);
-		parent.add(createNewMenuItem, c);
+		editMenuItem.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		editMenuItem.setFont(buttonFont);
+		editMenuItem.setActionCommand("EditMenuItem");
+		editMenuItem.setPreferredSize(largeButtonSize);
+		editMenuItem.setEnabled(false);
+		parent.add(editMenuItem, c);
 	}
 	
 	private void createDeleteButton(JPanel parent) {
@@ -187,22 +221,22 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.FIRST_LINE_END;
 		c.insets = new Insets(0, 20, 20, 0);
-		JButton createNewMenuItem = new JButton("Delete");
+		deleteMenuItem = new JButton("Delete");
 		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
-		createNewMenuItem.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		createNewMenuItem.setFont(buttonFont);
-		createNewMenuItem.setActionCommand("DeleteMenuItem");
-		createNewMenuItem.setPreferredSize(largeButtonSize);
-		parent.add(createNewMenuItem, c);
+		deleteMenuItem.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		deleteMenuItem.setFont(buttonFont);
+		deleteMenuItem.setActionCommand("DeleteMenuItem");
+		deleteMenuItem.setPreferredSize(largeButtonSize);
+		deleteMenuItem.setEnabled(false);
+		parent.add(deleteMenuItem, c);
 	}
 	
 	private void createMenuList(JPanel parent) {
 
-		DefaultListModel<Database.Item> menuListModel = new DefaultListModel<Database.Item>();
-		for(int i = 1; i <= 200; i++) {
-			menuListModel.addElement(new Database.Item("Menu Item", i*10));
-		}
-		JList<Database.Item> menuList = new JList<Database.Item>(menuListModel);
+		menuListModel = new DefaultListModel<Database.Item>();
+		updateIndexes(this.menu);
+		
+		menuList = new JList<Database.Item>(menuListModel);
 		menuList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		menuList.setLayoutOrientation(JList.VERTICAL);
 		menuList.setVisibleRowCount(-1);
@@ -298,7 +332,7 @@ public class MenuItems extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.insets = new Insets(0, 10, 0, 0);
-		JButton backToMainMenu = new JButton("Back");
+		backToMainMenu = new JButton("Back");
 		Font buttonFont = new Font(this.styleSettings.getDefaultFont(), Font.PLAIN, this.styleSettings.getDefaultSize());
 		backToMainMenu.setAlignmentX(Component.LEFT_ALIGNMENT);
 		backToMainMenu.setFont(buttonFont);
@@ -336,17 +370,44 @@ public class MenuItems extends JPanel {
 		createRightPanel();
 	}
 	
+	private Database.Item[] menu;
 	private StyleSettings styleSettings;
+	
+	public MenuItemsDialog dialog;
+	
 	private Dimension backButtonSize;
 	private Dimension largeButtonSize;
 	private Dimension textFieldSize;
 	
-	public MenuItems(StyleSettings styleSettings) {
+	public JButton backToMainMenu;
+	public JButton createNewMenuItem;
+	public JButton editMenuItem;
+	public JButton deleteMenuItem;
+	public JButton saveMenuItem;
+	public JButton cancelMenuItem;
+	
+	public JLabel nameLabel;
+	public JLabel priceLabel;
+	
+	public JTextField nameTextField;
+	public JTextField priceTextField;
+	
+	public JList<Database.Item> menuList;
+	public DefaultListModel<Database.Item> menuListModel; 
+	
+	public boolean creatingNew;
+	public boolean editingExisting;
+	
+	public MenuItems(StyleSettings styleSettings, Database.Item[] menu) {
 		super();
 		this.styleSettings = styleSettings;
+		this.menu = menu;
+		this.dialog = new MenuItemsDialog(this);
 		this.backButtonSize = new Dimension(65, 25);
 		this.largeButtonSize = new Dimension(120, 50);
 		this.textFieldSize = new Dimension(300, 25);
+		this.creatingNew = false;
+		this.editingExisting = false;
 		createMenuItemsPanel();
 	}
 

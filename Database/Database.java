@@ -47,7 +47,7 @@ public class Database {
                 currIndex = Integer.parseInt(in.nextLine()); //Sets the current index to the index read from the file (for comparison against the function input)
                 
                 if(currIndex == index){
-                    Item found = new Item(in.nextLine(), Integer.parseInt(in.nextLine())); //if the index is found, make a new item object and return it
+                    Item found = new Item(currIndex, in.nextLine(), Integer.parseInt(in.nextLine())); //if the index is found, make a new item object and return it
                     return found;
                 } else {
                     //Ignore data
@@ -68,8 +68,9 @@ public class Database {
             ArrayList<Item> items = new ArrayList<Item>();
             
             while(in.hasNextLine()){
-                in.nextLine(); //Throw
-                items.add(new Item(in.nextLine(), Integer.parseInt(in.nextLine())));
+                // in.nextLine(); //Throw
+            	// need this number in constructor now
+                items.add(new Item(Integer.parseInt(in.nextLine()), in.nextLine(), Integer.parseInt(in.nextLine())));
             }
             
             return items.toArray(new Item[items.size()]);
@@ -79,13 +80,14 @@ public class Database {
     }
     
     //Changes a menu item
-    public void updatePrice(int index, int newPrice){
+    public void updateItem(int index, String newName, int newPrice){
         File temp = new File("update.temp");
         
         try{
             PrintWriter output = new PrintWriter(temp); //write to the temp file
             Scanner in = new Scanner(menuDB); //Read from the menuDB
-            String update; //The price to update
+            String updatePrice; //The price to update
+            String updateName; // The name to update
             int currIndex;
             
             temp.createNewFile(); //Create the temp file for storage
@@ -94,14 +96,20 @@ public class Database {
             while(in.hasNextLine()){
                 currIndex = Integer.parseInt(in.nextLine());
                 output.println(currIndex);
-                output.println(in.nextLine());
-                update = in.nextLine();
+                //output.println(in.nextLine());
+                // print the newName instead
                 
+                updateName = in.nextLine();
                 if(currIndex == index){
-                    update = ""+newPrice;
+                	updateName = ""+newName;
                 }
+                output.println(updateName);
                 
-                output.println(update);
+                updatePrice = in.nextLine();
+                if(currIndex == index){
+                	updatePrice = ""+newPrice;
+                }
+                output.println(updatePrice);
                 
             }
             output.close();

@@ -3,8 +3,10 @@ package Database;
 public class Item {
     private String name;
     private int price;		// in cents
+    private int number;
     
-    public Item(String name, int price){
+    public Item(int number, String name, int price){
+    	this.number = number;
         this.name = name;
         this.price = price;
     }
@@ -17,11 +19,6 @@ public class Item {
         return price;
     }
     
-    /* Added by David
-     * 19/07/2016
-     * Notes:
-     * Editing screen needs this function.
-     */
     public void updateName(String name) {
     	this.name = new String(name);
     }
@@ -30,13 +27,12 @@ public class Item {
         return name;
     }
     
-    /* Added by David
-     * 19/07/2016
-     * Notes:
-     * Editing screen needs this function.
-     */
+    public int getNumber() {
+    	return this.number;
+    }
+    
     public String toString() {
-    	String readable = name + ": $" + Integer.toString(price/100) + "." + Integer.toString(price % 100);
+    	String readable = getNumber() + ": " + name + " - $" + Integer.toString(price/100) + "." + Integer.toString(price % 100);
     	if(price%100 == 0) {
     		readable += "0";
     	}
