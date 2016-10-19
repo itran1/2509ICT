@@ -2,7 +2,7 @@ package Database;
 
 import java.util.*;
 
-class Order {
+public class Order {
 	public Map<Item,Integer> items;
 	public enum OrderType {TAKEAWAY, HOME_DELIVERY};
 	private OrderType orderType;
