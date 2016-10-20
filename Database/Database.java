@@ -1,23 +1,25 @@
 package Database;
 
 import java.io.*;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Database {
     private File database;
     private File menuDB;
+    private File orderDB;
     
     //Loads the database or builds a new one if it doesn't exist
     public Database(){
-        database = new File("DB.sv");
+        database = new File("customerDB.sv");
         menuDB = new File("menuDB.sv");
+        orderDB = new File("orderDB.sv");
         
         if(!database.exists()){
             
             try {
-                database.createNewFile(); //Create a new DB if one doesn't already exist
+                database.createNewFile(); //Create a new customerDB if one doesn't already exist
                 menuDB.createNewFile(); //Create a new menuDB if one doesn't already exist
+                orderDB.createNewFile(); //Create a new orderDB if one doesn't already exist
             } catch (IOException e){}
             
         }
@@ -168,6 +170,78 @@ public class Database {
         } catch(FileNotFoundException e){}
         
         temp.delete();
+    }
+    
+    //Adds the orders to the database
+    public void addOrder(Order order, String date){
+        
+        try{
+            PrintWriter output = new PrintWriter(new FileWriter(orderDB,true)); //Opens a new PrintWriter in append mode
+            
+            output.println(order.getCustomer().getPhone());
+            output.println(date);
+            output.println(order.getOrderType());
+            output.println(order.getTotal());
+            output.close();
+            
+        } catch(IOException e){}
+        
+    }
+    
+    //Gets all orders based on the customer number
+    public Order[] getCustomerOrder(String number){
+        try {
+            Scanner in = new Scanner(orderDB);
+            String currNumber;
+            ArrayList<Order> orders = new ArrayList<Order>();
+            
+            while(in.hasNextLine()){
+                currNumber = in.nextLine();
+                
+                if(currNumber.equals(number)){
+                    orders.add(new Order(in.nextLine(), in.nextLine(), Integer.parseInt(in.nextLine()), getCustomer(currNumber)));
+                } else {
+                    //Throw
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
+                }
+            }
+            
+            return orders.toArray(new Order[orders.size()]);
+        } catch(FileNotFoundException e){}
+        
+        return null;
+        
+    }
+    
+    //Gets all orders based on the date
+    public Order[] getOrders(String date){
+        try {
+            ArrayList<Order> orders = new ArrayList<Order>();
+            Scanner in = new Scanner(orderDB);
+            String currNumber;
+            String currDate;
+            
+            while(in.hasNextLine()){
+                currNumber = in.nextLine();
+                currDate = in.nextLine();
+                
+                if(currDate.equals(date)){
+                    orders.add(new Order(in.nextLine(), in.nextLine(), Integer.parseInt(in.nextLine()), getCustomer(currNumber)));
+                } else {
+                    //Throw
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
+                }
+            }
+            
+            return orders.toArray(new Order[orders.size()]);
+        } catch(FileNotFoundException e){}
+        
+        return null;
+        
     }
     
     //Gets the size of the menuDB

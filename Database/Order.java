@@ -6,14 +6,33 @@ public class Order {
 	public Map<Item,Integer> items;
 	public enum OrderType {TAKEAWAY, HOME_DELIVERY};
 	private OrderType orderType;
-	
-	public Order() {
-		items = new HashMap<Item,Integer>();
-	}
+	private Customer customer;
+	private int total = 0; //Instantiated as to avoid null
+	private String date;
 	
 	public Order(OrderType orderType) {
-		this();
+		this.items = new HashMap<Item, Integer>();
 		this.orderType = orderType;
+	}
+	
+	//Made for database reinitialisation
+	public Order(String date, String orderType, int total, Customer customer){
+		this(OrderType.valueOf(orderType));
+		this.total = total;
+		this.customer = customer;
+		this.date = date;
+	}
+	
+	public int getTotal(){
+		int total = 0;
+		Item[] keys = items.keySet().toArray(new Item[items.size()]);
+		
+		for(int i = 0; i<keys.length; i++){
+			total += keys[i].getPrice()*items.get(keys[i]);
+		}
+		
+		this.total = total;
+		return total;
 	}
 
 	public void addItem(Item item, int q){
@@ -23,6 +42,7 @@ public class Order {
 	public void removeItem(Item item){
 		items.remove(item);
 	}
+	
 	public int getQuantity(Item item){
 		return 	items.get(item);
 	}
@@ -41,5 +61,13 @@ public class Order {
 	
 	public void setOrderType(OrderType orderType) {
 		this.orderType = orderType;
+	}
+	
+	public void setDate(String date){
+		this.date = date;
+	}
+	
+	public Customer getCustomer(){
+		return this.customer;
 	}
 }
