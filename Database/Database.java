@@ -207,7 +207,7 @@ public class Database {
             }
             
             if(scanResult){
-                Customer found = new Customer(scan.next(number), scan.next(), scan.next());
+                Customer found = new Customer(scan.nextLine(), scan.nextLine(), scan.nextLine());
                 return found;
             } else {
                 return null;
