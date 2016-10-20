@@ -13,7 +13,8 @@ public class Customer {
     
     //Returns the details as an array
     public String[] getDetails(){
-        String[] combine = {phone, address, financial};
+    	String financialReadable = financial.replace("|", " ");
+        String[] combine = {phone, address, financialReadable};
         return combine;
     }
 }
