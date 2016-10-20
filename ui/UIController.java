@@ -52,10 +52,13 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((MainMenu)views[0]).editMenuItems.addActionListener(this);
 		((MainMenu)views[0]).viewDailyReport.addActionListener(this);
 		
-		((NewOrder)views[1]).backToMainMenu.addActionListener(this);
+		((NewOrder)views[1]).backToMainMenuFromOrderTypeScreen.addActionListener(this);
+		((NewOrder)views[1]).backToMainMenuFromPhoneNumberScreen.addActionListener(this);
+		((NewOrder)views[1]).backToMainMenuFromCustomerDetailsScreen.addActionListener(this);
 		((NewOrder)views[1]).takeaway.addActionListener(this);
 		((NewOrder)views[1]).homeDelivery.addActionListener(this);
 		((NewOrder)views[1]).confirmPhoneNumber.addActionListener(this);
+		((NewOrder)views[1]).confirmCustomerDetails.addActionListener(this);
 		
 		((MenuItems)views[2]).backToMainMenu.addActionListener(this);
 		((MenuItems)views[2]).createNewMenuItem.addActionListener(this);
@@ -256,28 +259,60 @@ public class UIController implements ActionListener, ListSelectionListener {
 		// Otherwise, just go to the customer details screen.
 		if(cmd.equals("ConfirmPhoneNumber")) {
 			String phoneNumber = ((NewOrder)views[1]).phoneNumberTextField.getText();
-			if(phoneNumber == null || phoneNumber.equals("") || phoneNumber.length() != 10) {
+			if(phoneNumber == null || phoneNumber.equals("") || (phoneNumber.length() != 10 && phoneNumber.length() != 8)) {
 				((NewOrder)views[1]).dialog.invalidPhoneNumber();
 			} else {
 				try {
-					int phoneNumberInt = Integer.parseInt(phoneNumber);
-					if(phoneNumberInt <= 0) {
+					long phoneNumberLong = Long.parseLong(phoneNumber);
+					if(phoneNumberLong <= 0) {
 						((NewOrder)views[1]).dialog.invalidPhoneNumber();
 					} else {
 						this.customer = db.getCustomer(phoneNumber);
 						if(this.customer == null) {
 							int response = ((NewOrder)views[1]).dialog.newCustomer();
 							if(response == JOptionPane.YES_OPTION) {
-								((NewOrder)views[1]).showCustomerDetailsPanel();
+								((NewOrder)views[1]).showCustomerDetailsPanel(phoneNumber);
 							}
 						} else {
-							((NewOrder)views[1]).showOrderListPanel();
+							((NewOrder)views[1]).showOrderListPanel(this.customer);
 						}
 					}
 				} catch(NumberFormatException ex) {
 					((NewOrder)views[1]).dialog.invalidPhoneNumber();
 				}
 				
+			}
+		}
+		
+		// If the "Confirm" button is clicked from the customer details screen,
+		// create the Customer and store it in the database
+		if(cmd.equals("ConfirmCustomerDetails")) {
+			String address = ((NewOrder)views[1]).addressTextField.getText();
+			if(address == null || address.equals("")) {
+				((NewOrder)views[1]).dialog.invalidAddress();
+			} else {
+				String creditCardNumberString = ((NewOrder)views[1]).creditCardNumberTextField.getText();
+				if(creditCardNumberString == null || creditCardNumberString.equals("") || creditCardNumberString.length() != 16) {
+					((NewOrder)views[1]).dialog.invalidCreditCardNumber();
+				} else {
+					try {
+						long creditCardNumber = Long.parseLong(creditCardNumberString);
+						if(creditCardNumber < 0) {
+							((NewOrder)views[1]).dialog.invalidCreditCardNumber();
+						} else {
+							String phoneNumber = "" + ((NewOrder)views[1]).phoneNumberText.getText();
+							String creditCardDetails = new String(((NewOrder)views[1]).creditCardType.getSelectedItem().toString());
+							creditCardDetails += ("|" + creditCardNumberString + "|");
+							creditCardDetails += (((NewOrder)views[1]).creditCardExpiryMonth.getSelectedItem() + "|");
+							creditCardDetails += (((NewOrder)views[1]).creditCardExpiryYear.getSelectedItem() + "|");
+							Database.Customer customer = new Database.Customer(phoneNumber, address, creditCardDetails);
+							db.addCustomer(phoneNumber, address, creditCardDetails);
+							((NewOrder)views[1]).showOrderListPanel(customer);
+						}
+					} catch(NumberFormatException ex) {
+							((NewOrder)views[1]).dialog.invalidCreditCardNumber();
+					}
+				}
 			}
 		}
 	}

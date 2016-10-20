@@ -17,6 +17,14 @@ public class NewOrderDialog extends JOptionPane {
 		showMessageDialog(parent, "Error: Invalid phone number.\nPlease enter a valid phone number.\nFormat: 10 digits", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public void invalidAddress() {
+		showMessageDialog(parent, "Error: Invalid address.\nPlease enter a valid address.", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void invalidCreditCardNumber() {
+		showMessageDialog(parent, "Error: Invalid credit card number.\nPlease enter a valid credit card number.\nFormat: 16 digits", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	private NewOrder parent;
 	
 	public NewOrderDialog(NewOrder parent) {
