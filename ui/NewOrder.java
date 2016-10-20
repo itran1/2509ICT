@@ -711,7 +711,7 @@ public class NewOrder extends JPanel {
 		phoneNumberOrderScreen.setFont(textFont);
 		phoneNumberOrderScreen.setAlignmentX(Component.LEFT_ALIGNMENT);
 		phoneNumberOrderScreen.setBorder(BorderFactory.createLineBorder(Color.black));
-		phoneNumberOrderScreen.setPreferredSize(textFieldSize);
+		phoneNumberOrderScreen.setPreferredSize(smallTextFieldSize);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
