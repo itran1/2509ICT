@@ -6,12 +6,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Item;
+import Database.Order.OrderType;
 
 import java.awt.event.*;
 
 public class UIController implements ActionListener, ListSelectionListener {
 
 	private Database.Database db;
+	private Database.Order order;
+	private Database.Customer customer;
 	
 	private JFrame frame;
 	private CardLayout cardLayout;
@@ -30,11 +33,12 @@ public class UIController implements ActionListener, ListSelectionListener {
 	
 	public UIController() {
 		
-		db = new Database.Database();
+		this.db = new Database.Database();
 		Database.Item[] menu = db.getAllItems();
 		if(menu == null) {
 			menu = new Database.Item[]{};
 		}
+		this.order = new Database.Order();
 		styleSettings = new StyleSettings();
 		
 		views = new JPanel[] {
@@ -51,6 +55,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((NewOrder)views[1]).backToMainMenu.addActionListener(this);
 		((NewOrder)views[1]).takeaway.addActionListener(this);
 		((NewOrder)views[1]).homeDelivery.addActionListener(this);
+		((NewOrder)views[1]).confirmPhoneNumber.addActionListener(this);
 		
 		((MenuItems)views[2]).backToMainMenu.addActionListener(this);
 		((MenuItems)views[2]).createNewMenuItem.addActionListener(this);
@@ -132,9 +137,6 @@ public class UIController implements ActionListener, ListSelectionListener {
 		// If the "Save" button is clicked from the edit menu screen,
 		// create the Item and store it in the database
 		if(cmd.equals("SaveMenuItem")) {
-			
-
-			
 			String name = ((MenuItems)views[2]).nameTextField.getText();
 			if(name == null || name.equals("")) {
 				((MenuItems)views[2]).dialog.invalidName();
@@ -224,12 +226,58 @@ public class UIController implements ActionListener, ListSelectionListener {
 		
 		// If the "Back" button is clicked from the new order screen,
 		// produce a confirmation dialog
-		if(cmd.equals("BackToMainMenuFromOrderTypePanel")) {
+		if(cmd.equals("BackToMainMenuFromNewOrderPanel")) {
 			int response = ((NewOrder)views[1]).dialog.backToMain();
 			if(response == JOptionPane.YES_OPTION) {
 				((NewOrder)views[1]).cleanUp();
+				order = new Database.Order();
 				currentScreen = screens[0];
 				cardLayout.show(cardPanel, currentScreen);
+			}
+		}
+		
+		// If the "Takeaway" button is clicked from the new order screen,
+		// set the order to takeaway and load the phone number screen
+		if(cmd.equals("Takeaway")) {
+			order.setOrderType(OrderType.TAKEAWAY);
+			((NewOrder)views[1]).showPhoneNumberPanel();
+		}
+		
+		// If the "Home Delivery" button is clicked from the new order screen,
+		// set the order to home delivery and load the phone number screen
+		if(cmd.equals("HomeDelivery")) {
+			order.setOrderType(OrderType.HOME_DELIVERY);
+			((NewOrder)views[1]).showPhoneNumberPanel();
+		}
+		
+		// If the "Check Database" button is clicked from the new order screen,
+		// check the database to see if the phone number exists. If it doesn't,
+		// produce a dialog box to confirm storing it, and go to the customer details screen.
+		// Otherwise, just go to the customer details screen.
+		if(cmd.equals("ConfirmPhoneNumber")) {
+			String phoneNumber = ((NewOrder)views[1]).phoneNumberTextField.getText();
+			if(phoneNumber == null || phoneNumber.equals("") || phoneNumber.length() != 10) {
+				((NewOrder)views[1]).dialog.invalidPhoneNumber();
+			} else {
+				try {
+					int phoneNumberInt = Integer.parseInt(phoneNumber);
+					if(phoneNumberInt <= 0) {
+						((NewOrder)views[1]).dialog.invalidPhoneNumber();
+					} else {
+						this.customer = db.getCustomer(phoneNumber);
+						if(this.customer == null) {
+							int response = ((NewOrder)views[1]).dialog.newCustomer();
+							if(response == JOptionPane.YES_OPTION) {
+								((NewOrder)views[1]).showCustomerDetailsPanel();
+							}
+						} else {
+							((NewOrder)views[1]).showOrderListPanel();
+						}
+					}
+				} catch(NumberFormatException ex) {
+					((NewOrder)views[1]).dialog.invalidPhoneNumber();
+				}
+				
 			}
 		}
 	}
