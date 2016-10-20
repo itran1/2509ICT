@@ -17,4 +17,8 @@ public class Customer {
         String[] combine = {phone, address, financialReadable};
         return combine;
     }
+    
+    public String getPhone(){
+        return this.phone;
+    }
 }
