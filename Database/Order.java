@@ -27,7 +27,7 @@ TAKEAWAY,
 	private Customer customer;
 	
 	/** The total price of all orders. */
-	private int total = 0; //Instantiated as to avoid null
+	private int total;
 	
 	/** The date of the order. */
 	private String date;
@@ -37,7 +37,7 @@ TAKEAWAY,
 	 */
 	public Order() {
 		this.items = new HashMap<Item, Integer>();
-		
+		this.total = 0;
 	}
 	
 	/**
