@@ -10,14 +10,15 @@ public class Order {
 	private int total = 0; //Instantiated as to avoid null
 	private String date;
 	
-	public Order(OrderType orderType) {
+	public Order() {
 		this.items = new HashMap<Item, Integer>();
-		this.orderType = orderType;
+		
 	}
 	
 	//Made for database reinitialisation
 	public Order(String date, String orderType, int total, Customer customer){
-		this(OrderType.valueOf(orderType));
+		this();
+		this.orderType = OrderType.valueOf(orderType);
 		this.total = total;
 		this.customer = customer;
 		this.date = date;
