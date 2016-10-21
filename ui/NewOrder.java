@@ -7,6 +7,15 @@ import javax.swing.border.TitledBorder;
 @SuppressWarnings("serial")
 public class NewOrder extends JPanel {
 	
+	public void updateIndexes(Database.Item[] menu) {
+		menuListModel.removeAllElements();
+		if(menu.length > 0) {
+			for(int i = 0; i < menu.length; i++) {
+				menuListModel.addElement(new Database.Item(i, menu[i].getName(), menu[i].getPrice()));
+			}
+		}
+	}
+	
 	public void cleanUp() {
 		phoneNumberTextField.setText("");
 		phoneNumberText.setText("");
@@ -799,7 +808,7 @@ public class NewOrder extends JPanel {
 		c.anchor = GridBagConstraints.CENTER;
 		bottomPanel.add(bottomMiddlePanel, c);
 		
-		l = new JLabel("Search menu by number:");
+		l = new JLabel("Select menu item by number:");
 		l.setFont(textFont);
 		l.setAlignmentX(Component.LEFT_ALIGNMENT);
 		c = new GridBagConstraints();
@@ -815,7 +824,7 @@ public class NewOrder extends JPanel {
 		menuSearchTextField = new JTextField();
 		menuSearchTextField.setFont(textFont);
 		menuSearchTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-		menuSearchTextField.setPreferredSize(new Dimension(50, 25));
+		menuSearchTextField.setPreferredSize(new Dimension(70, 25));
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
@@ -827,7 +836,7 @@ public class NewOrder extends JPanel {
 		c.anchor = GridBagConstraints.LINE_START;
 		bottomMiddlePanel.add(menuSearchTextField, c);
 		
-		searchMenuByNumber = new JButton("Search");
+		searchMenuByNumber = new JButton("Select");
 		searchMenuByNumber.setAlignmentX(Component.CENTER_ALIGNMENT);
 		searchMenuByNumber.setFont(buttonFont);
 		searchMenuByNumber.setActionCommand("SearchMenuByNumber");
@@ -842,6 +851,26 @@ public class NewOrder extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LINE_START;
 		bottomMiddlePanel.add(searchMenuByNumber, c);
+		
+		menuListModel = new DefaultListModel<Database.Item>();
+		updateIndexes(this.menu);
+		menuList = new JList<Database.Item>(menuListModel);
+		menuList.setFont(new Font(styleSettings.getDefaultFont(), Font.BOLD, styleSettings.getDefaultSize()));
+		menuList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		menuList.setLayoutOrientation(JList.VERTICAL);
+		menuList.setVisibleRowCount(-1);
+		JScrollPane menuListScroller = new JScrollPane(menuList);
+		menuListScroller.setPreferredSize(new Dimension(200, 300));
+		menuListScroller.setViewportView(menuList);
+		menuListScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.gridheight = 1;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_START;
+		bottomMiddlePanel.add(menuListScroller, c);
 		
 		JPanel bottomRightPanel = new JPanel();
 		GridBagLayout bottomRightPanelLayout = new GridBagLayout();
@@ -861,18 +890,88 @@ public class NewOrder extends JPanel {
 		c.anchor = GridBagConstraints.LINE_END;
 		bottomPanel.add(bottomRightPanel, c);
 		
-		l = new JLabel("Placeholder:");
-		l.setFont(textFont);
-		l.setAlignmentX(Component.LEFT_ALIGNMENT);
+		orderListModel = new DefaultListModel<Database.Item>();
+		orderList = new JList<Database.Item>(orderListModel);
+		orderList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		orderList.setLayoutOrientation(JList.VERTICAL);
+		orderList.setVisibleRowCount(-1);
+		JScrollPane orderListScroller = new JScrollPane(orderList);
+		orderListScroller.setPreferredSize(new Dimension(200, 300));
+		orderListScroller.setViewportView(orderList);
+		orderListScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.weightx = 1.0;
+		c.gridheight = 3;
+		c.insets = new Insets(0, 0, 0, 20);
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(l, c);
+		bottomRightPanel.add(orderListScroller, c);
+		
+		addMenuItem = new JButton("Add");
+		addMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+		addMenuItem.setFont(buttonFont);
+		addMenuItem.setActionCommand("AddMenuItem");
+		addMenuItem.setPreferredSize(largeButtonSize);
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 1.0;
+		c.weighty = 0.33;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		bottomRightPanel.add(addMenuItem, c);
+		
+		editMenuItem = new JButton("Edit");
+		editMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+		editMenuItem.setFont(buttonFont);
+		editMenuItem.setActionCommand("EditMenuItem");
+		editMenuItem.setPreferredSize(largeButtonSize);
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 1.0;
+		c.weighty = 0.33;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_START;
+		bottomRightPanel.add(editMenuItem, c);
+		
+		deleteMenuItem = new JButton("Delete");
+		deleteMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+		deleteMenuItem.setFont(buttonFont);
+		deleteMenuItem.setActionCommand("DeleteMenuItem");
+		deleteMenuItem.setPreferredSize(largeButtonSize);
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 1.0;
+		c.weighty = 0.33;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		bottomRightPanel.add(deleteMenuItem, c);
+		
+		finaliseOrder = new JButton("Finalise");
+		finaliseOrder.setAlignmentX(Component.CENTER_ALIGNMENT);
+		finaliseOrder.setFont(buttonFont);
+		finaliseOrder.setActionCommand("FinaliseOrder");
+		finaliseOrder.setPreferredSize(largeButtonSize);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 1.0;
+		c.insets = new Insets(12, 0, 0, 20);
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
+		bottomRightPanel.add(finaliseOrder, c);
 		
 		return orderListPanel;
 	}
@@ -897,7 +996,7 @@ public class NewOrder extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel orderTypePanel, phoneNumberPanel, customerDetailsPanel, orderListPanel, menuItemPanel, orderSummaryPanel;
 	public JButton backToMainMenuFromOrderTypeScreen, backToMainMenuFromPhoneNumberScreen, backToMainMenuFromCustomerDetailsScreen, backToMainMenuFromOrderListScreen,
-		takeaway, homeDelivery, confirmPhoneNumber, confirmCustomerDetails, searchMenuByNumber;
+		takeaway, homeDelivery, confirmPhoneNumber, confirmCustomerDetails, searchMenuByNumber, addMenuItem, editMenuItem, deleteMenuItem, finaliseOrder;
 	public JTextField phoneNumberTextField, addressTextField, creditCardNumberTextField, menuSearchTextField;
 	public JLabel phoneNumberText, phoneNumberOrderScreen, addressOrderScreen, creditCardDetailsOrderScreen;
 	public JComboBox creditCardType, creditCardExpiryMonth, creditCardExpiryYear;
@@ -905,7 +1004,8 @@ public class NewOrder extends JPanel {
 	private String[] months;
 	private String[] years;
 	public JList<Database.Item> menuList;
-	public DefaultListModel<Database.Item> menuListModel; 
+	public JList<Database.Item> orderList; 
+	public DefaultListModel<Database.Item> menuListModel, orderListModel; 
 	private Dimension backButtonSize, smallButtonSize, largeButtonSize, textFieldSize, smallTextFieldSize, largeLabelSize;
 
 	public NewOrder(StyleSettings styleSettings, Database.Item[] menu) {
