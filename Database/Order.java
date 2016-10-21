@@ -3,33 +3,33 @@ package Database;
 import java.util.*;
 
 /**
- * The Order Class .
+ * The Order Class.
  * @author Sean Doran, Christain Miles, David Moschner and Ian Tran
  */
 public class Order {
 	
-	/** The items. */
+	/** The items in an order consisting of item name and quantity. */
 	public Map<Item,Integer> items;
 	
 	/**
 	 * The Enum OrderType.
 	 */
 	public enum OrderType {
-/** The takeaway. */
+/** The take away order type. Signifying that an order is take away. */
 TAKEAWAY, 
- /** The home delivery. */
+ /** The home delivery order type. Signifying that an order is home delivery. */
  HOME_DELIVERY};
 	
-	/** The order type. */
+	/** The order type of an order being TAKEAWAY or HOME_DELIVERY. */
 	private OrderType orderType;
 	
-	/** The customer. */
+	/** The customer who is connected to an order. */
 	private Customer customer;
 	
-	/** The total price of all orders. */
+	/** The total amount of money made on all orders. */
 	private int total;
 	
-	/** The date of the order. */
+	/** The date of an order. */
 	private String date;
 	
 	/**
@@ -43,10 +43,10 @@ TAKEAWAY,
 	/**
 	 * Instantiates a new order.
 	 *
-	 * @param date The date
-	 * @param orderType the order type
-	 * @param total The total
-	 * @param customer The customer
+	 * @param date The date of an order.
+	 * @param orderType The order type of an order being TAKEAWAY or HOME_DELIVERY.
+	 * @param total The total amount of money made on all orders.
+	 * @param customer The customer connected to an order.
 	 */
 	//Made for database reinitialisation
 	public Order(String date, String orderType, int total, Customer customer){
@@ -58,18 +58,18 @@ TAKEAWAY,
 	}
 	
 	/**
-	 * Gets the daily total of orders.
+	 * Gets the total amount of money made on all orders.
 	 *
-	 * @return The total
+	 * @return The total amount of money made on all orders.
 	 */
 	public int getTotal(){
 		return this.total;
 	}
 	
 	/**
-	 * Computes the daily total of orders.
+	 * Computes the total amount of money made on all orders.
 	 *
-	 * @return The int
+	 * @return The total amount of money made on all orders.
 	 */
 	public int computeTotal(){
 		int total = 0;
@@ -84,87 +84,92 @@ TAKEAWAY,
 	}
 
 	/**
-	 * Adds the item.
+	 * Adds an item into an order.
 	 *
-	 * @param item The item
-	 * @param q The quantity
+	 * @param item an item in an order.
+	 * @param q The quantity of an item in an order.
 	 */
 	public void addItem(Item item, int q){
 		items.put(item, q);
 	}
 	
 	/**
-	 * Removes the item.
+	 * Removes an item from an order.
 	 *
-	 * @param item The item
+	 * @param item An item in an order.
 	 */
 	public void removeItem(Item item){
 		items.remove(item);
 	}
 	
 	/**
-	 * Gets the quantity.
+	 * Gets the quantity of an item in an order.
 	 *
-	 * @param item the item
-	 * @return The quantity of the item needed for the order
+	 * @param item An item in an order.
+	 * @return The quantity of the item needed for an order.
 	 */
 	public int getQuantity(Item item){
 		return 	items.get(item);
 	}
 	
 	/**
-	 * Sets the quantity.
+	 * Sets the quantity of an item in an order.
 	 *
-	 * @param item the item
-	 * @param q The quantity
+	 * @param item An item in an order. 
+	 * @param q The quantity of an item in the order.
 	 */
 	public void setQuantity(Item item, int q) {
 		items.put(item, q);
 	}
 	
 	/**
-	 * Removes all items from the order.
+	 * Removes all items from an order.
 	 */
 	public void clearOrder(){
 		items.clear();
 	}
 	
 	/**
-	 * Gets the type order. the order Type being TAKEAWAY or HOME_DELIVERY
+	 * Gets the type order either being TAKEAWAY or HOME_DELIVERY.
 	 *
-	 * @return The order type
+	 * @return The order type being TAKEAWAY or HOME_DELIVERY.
 	 */
 	public OrderType getOrderType() {
 		return this.orderType;
 	}
 	
 	/**
-	 * Sets the type order . the order Type being TAKEAWAY or HOME_DELIVERY
+	 * Sets the type order either being TAKEAWAY or HOME_DELIVERY.
 	 *
-	 * @param orderType The new order type
+	 * @param orderType The new order type being TAKEAWAY or HOME_DELIVERY.
 	 */
 	public void setOrderType(OrderType orderType) {
 		this.orderType = orderType;
 	}
 	
 	/**
-	 * Sets the date as a String. 
+	 * Sets the date of an order as a String. 
 	 *
-	 * @param date The new date
+	 * @param date The date of an order as a String. 
 	 */
 	public void setDate(String date){
 		this.date = date;
 	}
 	
 	/**
-	 * Gets the customer.
+	 * Gets the customer connected to an order.
 	 *
-	 * @return The customer
+	 * @return The customer connected to an order.
 	 */
 	public Customer getCustomer(){
 		return this.customer;
 	}
 	
+	/**
+	 * Gets an array of Strings containing items, quantities and subtotal.
+	 *
+	 * @return An Array of Strings containing items, quantities and subtotal.
+	 */
 	public String[] getItems() {
 		int i;
 		String[] readable = new String[items.size()];

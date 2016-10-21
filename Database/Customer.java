@@ -6,21 +6,21 @@ package Database;
  */
 public class Customer {
     
-    /** The phone. */
+    /** The phone number of a customer. */
     private String phone;
     
-    /** The address. */
+    /** The address of a customer. */
     private String address;
     
-    /** The financial. */
+    /** The CC details of a customer. */
     private String financial;
     
     /**
      * Instantiates a new customer.
      *
-     * @param phone The phone
-     * @param address The address
-     * @param financial The financial
+     * @param phone The phone number of a customer.
+     * @param address The address of a customer.
+     * @param financial The CC details of a customer.
      */
     public Customer(String phone,String address, String financial){
         this.phone = phone;
@@ -29,9 +29,9 @@ public class Customer {
     }
     
     /**
-     * Gets the Phone Number and Address and CC details.
+     * Gets the Phone Number, Address and CC details as an array of Strings.
      *
-     * @return The Phone Number and Address and CC details as a single String
+     * @return The Phone Number, Address and CC details as an array of Strings.
      */
     //Returns the details as an array
     public String[] getDetails(){
@@ -41,9 +41,9 @@ public class Customer {
     }
     
     /**
-     * Gets the phone number.
+     * Gets the phone number of a customer.
      *
-     * @return The phone number
+     * @return The phone number of a customer.
      */
     public String getPhone(){
         return this.phone;

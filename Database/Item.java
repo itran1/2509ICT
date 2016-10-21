@@ -6,21 +6,21 @@ package Database;
  */
 public class Item {
     
-    /** The name. */
+    /** The name of of a menu item as a String. */
     private String name;
     
-    /** The price. */
+    /** The price of a menu item as an Integer. */
     private int price;		// in cents
     
-    /** The number. */
+    /** The number of a menu item as an Integer. */
     private int number;
     
     /**
-     * Instantiates a new item.
+     * Instantiates a new menu item.
      *
-     * @param number The number
-     * @param name The name
-     * @param price The price
+     * @param number The number of a menu item as an Integer.
+     * @param name The name of a menu item as a String.
+     * @param price The price of a menu item as a Integer.
      */
     public Item(int number, String name, int price){
     	this.number = number;
@@ -29,45 +29,45 @@ public class Item {
     }
     
     /**
-     * Updates the item price.
+     * Updates the price of a menu item as an Integer.
      *
-     * @param price The item price
+     * @param price The price of a menu item as an Integer.
      */
     public void updatePrice(int price){
         this.price = price;
     }
     
     /**
-     * Gets the item price.
+     * Gets the price of a menu item as an Integer.
      *
-     * @return The item price
+     * @return The price of a menu item as an Integer.
      */
     public int getPrice(){
         return price;
     }
     
     /**
-     * Updates the item name.
+     * Updates the name of a menu item as a String.
      *
-     * @param name The item name
+     * @param name The name of a menu item as a String.
      */
     public void updateName(String name) {
     	this.name = new String(name);
     }
     
     /**
-     * Gets the item name.
+     * Gets the name of a menu item as a String.
      *
-     * @return The item name
+     * @return The name of a menu item as a String.
      */
     public String getName(){
         return name;
     }
     
     /**
-     * Gets The item number.
+     * Gets The number of a menu item as an Integer.
      *
-     * @return The item number
+     * @return The number of a menu item as an Integer.
      */
     public int getNumber() {
     	return this.number;
@@ -76,7 +76,7 @@ public class Item {
     /**
      * To string.
      *
-     * @return the string
+     * @return A readable String of Item number, name and price.
      */
     public String toString() {
     	String readable = getNumber() + ": " + name + " - $" + Integer.toString(price/100) + "." + Integer.toString(price % 100);
