@@ -329,7 +329,8 @@ public class UIController implements ActionListener, ListSelectionListener {
 					item = ((NewOrder)views[1]).menuListModel.getElementAt(i);
 					if(selection == item.getNumber()) {
 						foundSelection = true;
-						System.out.println("select item: " + item);
+						((NewOrder)views[1]).menuList.setSelectedIndex(i);
+						((NewOrder)views[1]).menuList.ensureIndexIsVisible(i);
 					}
 				}
 				if(!foundSelection) {
