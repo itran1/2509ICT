@@ -1,7 +1,7 @@
 package Database;
 
 /**
- * The Class Item.
+ * The Item Class.
  * @author Sean Doran, Christain Miles, David Moschner and Ian Tran
  */
 public class Item {
@@ -18,9 +18,9 @@ public class Item {
     /**
      * Instantiates a new item.
      *
-     * @param number the number
-     * @param name the name
-     * @param price the price
+     * @param number The number
+     * @param name The name
+     * @param price The price
      */
     public Item(int number, String name, int price){
     	this.number = number;
@@ -29,45 +29,45 @@ public class Item {
     }
     
     /**
-     * Update price.
+     * Updates the item price.
      *
-     * @param price the price
+     * @param price The item price
      */
     public void updatePrice(int price){
         this.price = price;
     }
     
     /**
-     * Gets the price.
+     * Gets the item price.
      *
-     * @return the price
+     * @return The item price
      */
     public int getPrice(){
         return price;
     }
     
     /**
-     * Update name.
+     * Updates the item name.
      *
-     * @param name the name
+     * @param name The item name
      */
     public void updateName(String name) {
     	this.name = new String(name);
     }
     
     /**
-     * Gets the name.
+     * Gets the item name.
      *
-     * @return the name
+     * @return The item name
      */
     public String getName(){
         return name;
     }
     
     /**
-     * Gets the number.
+     * Gets The item number.
      *
-     * @return the number
+     * @return The item number
      */
     public int getNumber() {
     	return this.number;

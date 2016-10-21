@@ -1,7 +1,7 @@
 package Database;
 
 /**
- * The Class Customer.
+ * The Customer Class.
  * @author Sean Doran, Christain Miles, David Moschner and Ian Tran
  */
 public class Customer {
@@ -18,9 +18,9 @@ public class Customer {
     /**
      * Instantiates a new customer.
      *
-     * @param phone the phone
-     * @param address the address
-     * @param financial the financial
+     * @param phone The phone
+     * @param address The address
+     * @param financial The financial
      */
     public Customer(String phone,String address, String financial){
         this.phone = phone;
@@ -29,9 +29,9 @@ public class Customer {
     }
     
     /**
-     * Gets the details.
+     * Gets the Phone Number and Address and CC details.
      *
-     * @return the details
+     * @return The Phone Number and Address and CC details as a single String
      */
     //Returns the details as an array
     public String[] getDetails(){
@@ -41,9 +41,9 @@ public class Customer {
     }
     
     /**
-     * Gets the phone.
+     * Gets the phone number.
      *
-     * @return the phone
+     * @return The phone number
      */
     public String getPhone(){
         return this.phone;
