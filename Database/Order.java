@@ -27,7 +27,7 @@ TAKEAWAY,
 	private Customer customer;
 	
 	/** The total price of all orders. */
-	private int total = 0; //Instantiated as to avoid null
+	private int total;
 	
 	/** The date of the order. */
 	private String date;
@@ -37,7 +37,7 @@ TAKEAWAY,
 	 */
 	public Order() {
 		this.items = new HashMap<Item, Integer>();
-		
+		this.total = 0;
 	}
 	
 	/**
@@ -163,5 +163,21 @@ TAKEAWAY,
 	 */
 	public Customer getCustomer(){
 		return this.customer;
+	}
+	
+	public String[] getItems() {
+		int i;
+		String[] readable = new String[items.size()];
+		Item[] keys = items.keySet().toArray(new Item[items.size()]);
+		for(i = 0; i < keys.length; i++) {
+			readable[i] = this.getQuantity(keys[i]) + "x " + keys[i].getNumber() + ": " + keys[i].getName() + " - $";
+			int price = keys[i].getPrice();
+			int subTotal = price * getQuantity(keys[i]);
+			readable[i] += Integer.toString(subTotal/100) + "." + Integer.toString(subTotal % 100);
+	    	if(subTotal%100 == 0) {
+	    		readable[i] += "0";
+	    	}
+		}
+		return readable;
 	}
 }
