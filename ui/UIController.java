@@ -66,6 +66,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((NewOrder)views[1]).editMenuItem.addActionListener(this);
 		((NewOrder)views[1]).deleteMenuItem.addActionListener(this);
 		((NewOrder)views[1]).finaliseOrder.addActionListener(this);
+		((NewOrder)views[1]).orderList.addListSelectionListener(this);
 		
 		((MenuItems)views[2]).backToMainMenu.addActionListener(this);
 		((MenuItems)views[2]).createNewMenuItem.addActionListener(this);
@@ -352,9 +353,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		// produce a popup to get the quantity
 		if(cmd.equals("AddMenuItemToOrder")) {
 			JList<Database.Item> menuList = ((NewOrder)views[1]).menuList;
-			JList<String> orderList = ((NewOrder)views[1]).orderList;
 			menuListModel = ((NewOrder)views[1]).menuListModel;
-			DefaultListModel<String> orderListModel = ((NewOrder)views[1]).orderListModel;
 			Database.Item selectedItem = (menuListModel.getElementAt(menuList.getSelectedIndex()));
 			int quantity = ((NewOrder)views[1]).dialog.getQuantity(selectedItem.toString());
 			if(quantity == -1) {
@@ -362,10 +361,8 @@ public class UIController implements ActionListener, ListSelectionListener {
 			} else {
 				Database.Item itemToAdd = new Database.Item(selectedItem.getNumber(), selectedItem.getName(), selectedItem.getPrice());
 				((NewOrder)views[1]).order.addItem(itemToAdd, quantity);
-				
-				((NewOrder)views[1]).updateOrder();
+				this.order = ((NewOrder)views[1]).updateOrder();
 			}
-			order.items = ((NewOrder)views[1]).order.items;
 		}
 	}
 
@@ -400,6 +397,17 @@ public class UIController implements ActionListener, ListSelectionListener {
 			if(list.getSelectedIndex() >= 0) {
 				((NewOrder)views[1]).addMenuItem.setEnabled(true);
 				((NewOrder)views[1]).menuSearchTextField.setText("" + list.getSelectedIndex());
+			}
+		}
+		
+		JList<String> orderList;
+		orderList = (JList<String>)e.getSource();
+		
+		if(orderList == ((NewOrder)views[1]).orderList) {
+			if(list.getSelectedIndex() >= 0) {
+				((NewOrder)views[1]).editMenuItem.setEnabled(true);
+				((NewOrder)views[1]).deleteMenuItem.setEnabled(true);
+				((NewOrder)views[1]).finaliseOrder.setEnabled(true);
 			}
 		}
 	}
