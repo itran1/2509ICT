@@ -181,7 +181,7 @@ public class Database {
             output.println(order.getCustomer().getPhone());
             output.println(date);
             output.println(order.getOrderType());
-            output.println(order.getTotal());
+            output.println(order.computeTotal());
             output.close();
             
         } catch(IOException e){}
@@ -228,7 +228,7 @@ public class Database {
                 currDate = in.nextLine();
                 
                 if(currDate.equals(date)){
-                    orders.add(new Order(in.nextLine(), in.nextLine(), Integer.parseInt(in.nextLine()), getCustomer(currNumber)));
+                    orders.add(new Order(currDate, in.nextLine(), Integer.parseInt(in.nextLine()), getCustomer(currNumber)));
                 } else {
                     //Throw
                     in.nextLine();
