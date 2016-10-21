@@ -25,6 +25,10 @@ public class Order {
 	}
 	
 	public int getTotal(){
+		return this.total;
+	}
+	
+	public int computeTotal(){
 		int total = 0;
 		Item[] keys = items.keySet().toArray(new Item[items.size()]);
 		
