@@ -60,6 +60,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((NewOrder)views[1]).homeDelivery.addActionListener(this);
 		((NewOrder)views[1]).confirmPhoneNumber.addActionListener(this);
 		((NewOrder)views[1]).confirmCustomerDetails.addActionListener(this);
+		((NewOrder)views[1]).searchMenuByNumber.addActionListener(this);
 		
 		((MenuItems)views[2]).backToMainMenu.addActionListener(this);
 		((MenuItems)views[2]).createNewMenuItem.addActionListener(this);
@@ -314,6 +315,29 @@ public class UIController implements ActionListener, ListSelectionListener {
 							((NewOrder)views[1]).dialog.invalidCreditCardNumber();
 					}
 				}
+			}
+		}
+		// If the "Select" button is clicked from the order list screen,
+		// select the appropriate menu item
+		if(cmd.equals("SearchMenuByNumber")) {
+			try {
+				int selection = Integer.parseInt(((NewOrder)views[1]).menuSearchTextField.getText());
+				Database.Item selectedItem = null;
+				boolean foundSelection = false;
+				int i;
+				for(i = 0; i < ((NewOrder)views[1]).menuListModel.getSize(); i++) {
+					item = ((NewOrder)views[1]).menuListModel.getElementAt(i);
+					if(selection == item.getNumber()) {
+						foundSelection = true;
+						System.out.println("select item: " + item);
+					}
+				}
+				if(!foundSelection) {
+					((NewOrder)views[1]).dialog.menuItemNotFound();			
+				}
+				
+			} catch(NumberFormatException ex) {
+				((NewOrder)views[1]).dialog.invalidMenuSelection();
 			}
 		}
 	}

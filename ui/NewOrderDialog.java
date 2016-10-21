@@ -25,6 +25,14 @@ public class NewOrderDialog extends JOptionPane {
 		showMessageDialog(parent, "Error: Invalid credit card number.\nPlease enter a valid credit card number.\nFormat: 16 digits", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public void invalidMenuSelection() {
+		showMessageDialog(parent, "Error: Invalid number.\nPlease enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void menuItemNotFound() {
+		showMessageDialog(parent, "Error: Menu item not found.\nPlease enter an existing menu item.", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	private NewOrder parent;
 	
 	public NewOrderDialog(NewOrder parent) {
