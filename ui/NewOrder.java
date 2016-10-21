@@ -4,6 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import Database.Item;
+
 @SuppressWarnings("serial")
 public class NewOrder extends JPanel {
 	
@@ -16,10 +18,25 @@ public class NewOrder extends JPanel {
 		}
 	}
 	
+	public void updateOrder() {
+		orderListModel.removeAllElements();
+		int i;
+		String[] readable = this.order.getItems();
+		for(i = 0; i < this.order.items.size(); i++) {
+			orderListModel.addElement(readable[i]);
+		}
+	}
+	
 	public void cleanUp() {
 		phoneNumberTextField.setText("");
 		phoneNumberText.setText("");
 		addressTextField.setText("");
+		menuList.clearSelection();
+		addMenuItem.setEnabled(false);
+		editMenuItem.setEnabled(false);
+		deleteMenuItem.setEnabled(false);
+		finaliseOrder.setEnabled(false);
+		menuSearchTextField.setText("");
 		currentScreen = screens[0];
 		this.cardLayout.show(this, currentScreen);
 	}
@@ -890,8 +907,8 @@ public class NewOrder extends JPanel {
 		c.anchor = GridBagConstraints.LINE_END;
 		bottomPanel.add(bottomRightPanel, c);
 		
-		orderListModel = new DefaultListModel<Database.Item>();
-		orderList = new JList<Database.Item>(orderListModel);
+		orderListModel = new DefaultListModel<String>();
+		orderList = new JList<String>(orderListModel);
 		orderList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		orderList.setLayoutOrientation(JList.VERTICAL);
 		orderList.setVisibleRowCount(-1);
@@ -912,8 +929,9 @@ public class NewOrder extends JPanel {
 		addMenuItem = new JButton("Add");
 		addMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
 		addMenuItem.setFont(buttonFont);
-		addMenuItem.setActionCommand("AddMenuItem");
+		addMenuItem.setActionCommand("AddMenuItemToOrder");
 		addMenuItem.setPreferredSize(largeButtonSize);
+		addMenuItem.setEnabled(false);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 0;
@@ -928,8 +946,9 @@ public class NewOrder extends JPanel {
 		editMenuItem = new JButton("Edit");
 		editMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
 		editMenuItem.setFont(buttonFont);
-		editMenuItem.setActionCommand("EditMenuItem");
+		editMenuItem.setActionCommand("EditMenuItemInOrder");
 		editMenuItem.setPreferredSize(largeButtonSize);
+		editMenuItem.setEnabled(false);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 1;
@@ -944,8 +963,9 @@ public class NewOrder extends JPanel {
 		deleteMenuItem = new JButton("Delete");
 		deleteMenuItem.setAlignmentX(Component.CENTER_ALIGNMENT);
 		deleteMenuItem.setFont(buttonFont);
-		deleteMenuItem.setActionCommand("DeleteMenuItem");
+		deleteMenuItem.setActionCommand("DeleteMenuItemFromOrder");
 		deleteMenuItem.setPreferredSize(largeButtonSize);
+		deleteMenuItem.setEnabled(false);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 2;
@@ -962,6 +982,7 @@ public class NewOrder extends JPanel {
 		finaliseOrder.setFont(buttonFont);
 		finaliseOrder.setActionCommand("FinaliseOrder");
 		finaliseOrder.setPreferredSize(largeButtonSize);
+		finaliseOrder.setEnabled(false);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 4;
@@ -987,6 +1008,7 @@ public class NewOrder extends JPanel {
 	private StyleSettings styleSettings;
 	private Database.Item[] menu;
 	private Database.Customer customer;
+	public Database.Order order;
 	
 	private String[] screens;
 	private String currentScreen;
@@ -1004,8 +1026,9 @@ public class NewOrder extends JPanel {
 	private String[] months;
 	private String[] years;
 	public JList<Database.Item> menuList;
-	public JList<Database.Item> orderList; 
-	public DefaultListModel<Database.Item> menuListModel, orderListModel; 
+	public JList<String> orderList; 
+	public DefaultListModel<Database.Item> menuListModel;
+	public DefaultListModel<String> orderListModel; 
 	private Dimension backButtonSize, smallButtonSize, largeButtonSize, textFieldSize, smallTextFieldSize, largeLabelSize;
 
 	public NewOrder(StyleSettings styleSettings, Database.Item[] menu) {
@@ -1013,6 +1036,7 @@ public class NewOrder extends JPanel {
 		this.styleSettings = styleSettings;
 		this.menu = menu;
 		this.customer = new Database.Customer("", "", "");
+		this.order = new Database.Order();
 		this.dialog = new NewOrderDialog(this);
 		this.backButtonSize = new Dimension(65, 25);
 		this.largeButtonSize = new Dimension(120, 50);

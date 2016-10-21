@@ -33,6 +33,21 @@ public class NewOrderDialog extends JOptionPane {
 		showMessageDialog(parent, "Error: Menu item not found.\nPlease enter an existing menu item.", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public int getQuantity(String menuItem) {
+		int quantity;
+		String input = showInputDialog(parent, "Enter quantity for menu item:\n" + menuItem, "Enter quantity", JOptionPane.QUESTION_MESSAGE);
+		try {
+			quantity = Integer.parseInt(input);
+		} catch(NumberFormatException ex) {
+			return -1;
+		}
+		return quantity;
+	}
+	
+	public void invalidQuantity() {
+		showMessageDialog(parent, "Error: Invalid quantity.\nPlease enter a valid quantity.", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	private NewOrder parent;
 	
 	public NewOrderDialog(NewOrder parent) {

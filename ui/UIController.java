@@ -61,6 +61,11 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((NewOrder)views[1]).confirmPhoneNumber.addActionListener(this);
 		((NewOrder)views[1]).confirmCustomerDetails.addActionListener(this);
 		((NewOrder)views[1]).searchMenuByNumber.addActionListener(this);
+		((NewOrder)views[1]).menuList.addListSelectionListener(this);
+		((NewOrder)views[1]).addMenuItem.addActionListener(this);
+		((NewOrder)views[1]).editMenuItem.addActionListener(this);
+		((NewOrder)views[1]).deleteMenuItem.addActionListener(this);
+		((NewOrder)views[1]).finaliseOrder.addActionListener(this);
 		
 		((MenuItems)views[2]).backToMainMenu.addActionListener(this);
 		((MenuItems)views[2]).createNewMenuItem.addActionListener(this);
@@ -326,11 +331,12 @@ public class UIController implements ActionListener, ListSelectionListener {
 				boolean foundSelection = false;
 				int i;
 				for(i = 0; i < ((NewOrder)views[1]).menuListModel.getSize(); i++) {
-					item = ((NewOrder)views[1]).menuListModel.getElementAt(i);
-					if(selection == item.getNumber()) {
+					selectedItem = ((NewOrder)views[1]).menuListModel.getElementAt(i);
+					if(selection == selectedItem.getNumber()) {
 						foundSelection = true;
 						((NewOrder)views[1]).menuList.setSelectedIndex(i);
 						((NewOrder)views[1]).menuList.ensureIndexIsVisible(i);
+						((NewOrder)views[1]).addMenuItem.setEnabled(true);
 					}
 				}
 				if(!foundSelection) {
@@ -341,6 +347,26 @@ public class UIController implements ActionListener, ListSelectionListener {
 				((NewOrder)views[1]).dialog.invalidMenuSelection();
 			}
 		}
+		
+		// If the "Add" button is clicked from the order list screen,
+		// produce a popup to get the quantity
+		if(cmd.equals("AddMenuItemToOrder")) {
+			JList<Database.Item> menuList = ((NewOrder)views[1]).menuList;
+			JList<String> orderList = ((NewOrder)views[1]).orderList;
+			menuListModel = ((NewOrder)views[1]).menuListModel;
+			DefaultListModel<String> orderListModel = ((NewOrder)views[1]).orderListModel;
+			Database.Item selectedItem = (menuListModel.getElementAt(menuList.getSelectedIndex()));
+			int quantity = ((NewOrder)views[1]).dialog.getQuantity(selectedItem.toString());
+			if(quantity == -1) {
+				((NewOrder)views[1]).dialog.invalidQuantity();
+			} else {
+				Database.Item itemToAdd = new Database.Item(selectedItem.getNumber(), selectedItem.getName(), selectedItem.getPrice());
+				((NewOrder)views[1]).order.addItem(itemToAdd, quantity);
+				
+				((NewOrder)views[1]).updateOrder();
+			}
+			order.items = ((NewOrder)views[1]).order.items;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -350,26 +376,32 @@ public class UIController implements ActionListener, ListSelectionListener {
 		JList<Database.Item> list;
 		list = (JList<Database.Item>)e.getSource();
 		
-		if(list.getSelectedIndex() >= 0) {
-			Database.Item item;
-			
-			DefaultListModel<Database.Item> menuListModel;
-			
-			
-			menuListModel = (DefaultListModel<Database.Item>) list.getModel();
-			item = menuListModel.getElementAt(list.getSelectedIndex());
-			
-			((MenuItems)views[2]).nameTextField.setText(item.getName());
-			String priceText = "" + item.getPrice() / 100 + "." + item.getPrice() % 100;
-			if(item.getPrice() % 100 == 0) {
-				priceText += "0";
-			}
-			((MenuItems)views[2]).priceTextField.setText(priceText);
-			((MenuItems)views[2]).editingExisting = true;
-			((MenuItems)views[2]).enableEditing(true);
-			((MenuItems)views[2]).deleteMenuItem.setEnabled(true);
-		}
+		if(list == ((MenuItems)views[2]).menuList) {
+			if(list.getSelectedIndex() >= 0) {
+				Database.Item item;				
+				DefaultListModel<Database.Item> menuListModel;
 
+				menuListModel = (DefaultListModel<Database.Item>) list.getModel();
+				item = menuListModel.getElementAt(list.getSelectedIndex());
+				
+				((MenuItems)views[2]).nameTextField.setText(item.getName());
+				String priceText = "" + item.getPrice() / 100 + "." + item.getPrice() % 100;
+				if(item.getPrice() % 100 == 0) {
+					priceText += "0";
+				}
+				((MenuItems)views[2]).priceTextField.setText(priceText);
+				((MenuItems)views[2]).editingExisting = true;
+				((MenuItems)views[2]).enableEditing(true);
+				((MenuItems)views[2]).deleteMenuItem.setEnabled(true);
+			}
+		}
+		
+		if(list == ((NewOrder)views[1]).menuList) {
+			if(list.getSelectedIndex() >= 0) {
+				((NewOrder)views[1]).addMenuItem.setEnabled(true);
+				((NewOrder)views[1]).menuSearchTextField.setText("" + list.getSelectedIndex());
+			}
+		}
 	}
 
 }
