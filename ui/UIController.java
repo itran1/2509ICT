@@ -55,6 +55,7 @@ public class UIController implements ActionListener, ListSelectionListener {
 		((NewOrder)views[1]).backToMainMenuFromOrderTypeScreen.addActionListener(this);
 		((NewOrder)views[1]).backToMainMenuFromPhoneNumberScreen.addActionListener(this);
 		((NewOrder)views[1]).backToMainMenuFromCustomerDetailsScreen.addActionListener(this);
+		((NewOrder)views[1]).backToMainMenuFromOrderListScreen.addActionListener(this);
 		((NewOrder)views[1]).takeaway.addActionListener(this);
 		((NewOrder)views[1]).homeDelivery.addActionListener(this);
 		((NewOrder)views[1]).confirmPhoneNumber.addActionListener(this);

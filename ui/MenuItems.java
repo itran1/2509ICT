@@ -9,8 +9,6 @@ import java.awt.*;
 public class MenuItems extends JPanel {
 	
 	public void updateIndexes(Database.Item[] menu) {
-		
-		
 		menuListModel.removeAllElements();
 		if(menu.length > 0) {
 			for(int i = 0; i < menu.length; i++) {
@@ -237,6 +235,7 @@ public class MenuItems extends JPanel {
 		updateIndexes(this.menu);
 		
 		menuList = new JList<Database.Item>(menuListModel);
+		menuList.setFont(new Font(styleSettings.getDefaultFont(), Font.BOLD, styleSettings.getDefaultSize()));
 		menuList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		menuList.setLayoutOrientation(JList.VERTICAL);
 		menuList.setVisibleRowCount(-1);
