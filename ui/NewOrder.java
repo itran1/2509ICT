@@ -17,9 +17,9 @@ public class NewOrder extends JPanel {
 	
 	public void showOrderListPanel(Database.Customer customer) {
 		this.customer = customer;
-		phoneNumberOrderScreen.setText(customer.getDetails()[0]);
-		addressOrderScreen.setText("<html><body style='width: 150'>" + customer.getDetails()[1] + "</body></html>");
-		creditCardDetailsOrderScreen.setText("<html><body style='width: 150'>" + customer.getDetails()[2] + "</body></html>");
+		phoneNumberOrderScreen.setText(this.customer.getDetails()[0]);
+		addressOrderScreen.setText("<html><body style='width: 150'>" + this.customer.getDetails()[1] + "</body></html>");
+		creditCardDetailsOrderScreen.setText("<html><body style='width: 150'>" + this.customer.getDetails()[2] + "</body></html>");
 		currentScreen = screens[3];
 		this.cardLayout.show(this, currentScreen);
 		System.out.println("showing " + screens[3]);
@@ -688,7 +688,7 @@ public class NewOrder extends JPanel {
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.weightx = 0.34;
+		c.weightx = 0.33;
 		c.weighty = 1.0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LINE_START;
@@ -780,146 +780,100 @@ public class NewOrder extends JPanel {
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LINE_START;
 		bottomLeftPanel.add(creditCardDetailsOrderScreen, c);
-		/*
-		JPanel bottomRightPanel = new JPanel();
-		GridBagLayout bottomRightPanelLayout = new GridBagLayout();
-		bottomRightPanel.setLayout(bottomRightPanelLayout);
-		TitledBorder bottomRightPanelTitle;
-		bottomRightPanelTitle = BorderFactory.createTitledBorder("Payment Details");
-		bottomRightPanelTitle.setTitleFont(textFont);
-		bottomRightPanel.setBorder(bottomRightPanelTitle);
+
+		JPanel bottomMiddlePanel = new JPanel();
+		GridBagLayout bottomMiddlePanelLayout = new GridBagLayout();
+		bottomMiddlePanel.setLayout(bottomMiddlePanelLayout);
+		TitledBorder bottomMiddlePanelTitle;
+		bottomMiddlePanelTitle = BorderFactory.createTitledBorder("Menu");
+		bottomMiddlePanelTitle.setTitleFont(textFont);
+		bottomMiddlePanel.setBorder(bottomMiddlePanelTitle);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.weightx = 0.5;
+		c.weightx = 0.33;
+		c.weighty = 1.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.CENTER;
+		bottomPanel.add(bottomMiddlePanel, c);
+		
+		l = new JLabel("Search menu by number:");
+		l.setFont(textFont);
+		l.setAlignmentX(Component.LEFT_ALIGNMENT);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.gridheight = 1;
+		c.weightx = 1.0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_START;
+		bottomMiddlePanel.add(l, c);
+		
+		menuSearchTextField = new JTextField();
+		menuSearchTextField.setFont(textFont);
+		menuSearchTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
+		menuSearchTextField.setPreferredSize(new Dimension(50, 25));
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.insets = new Insets(0, 0, 20, 20);
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_START;
+		bottomMiddlePanel.add(menuSearchTextField, c);
+		
+		searchMenuByNumber = new JButton("Search");
+		searchMenuByNumber.setAlignmentX(Component.CENTER_ALIGNMENT);
+		searchMenuByNumber.setFont(buttonFont);
+		searchMenuByNumber.setActionCommand("SearchMenuByNumber");
+		searchMenuByNumber.setPreferredSize(smallButtonSize);
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 1.0;
+		c.insets = new Insets(0, 0, 20, 0);
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_START;
+		bottomMiddlePanel.add(searchMenuByNumber, c);
+		
+		JPanel bottomRightPanel = new JPanel();
+		GridBagLayout bottomRightPanelLayout = new GridBagLayout();
+		bottomRightPanel.setLayout(bottomRightPanelLayout);
+		TitledBorder bottomRightPanelTitle;
+		bottomRightPanelTitle = BorderFactory.createTitledBorder("Order");
+		bottomRightPanelTitle.setTitleFont(textFont);
+		bottomRightPanel.setBorder(bottomRightPanelTitle);
+		c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0.34;
 		c.weighty = 1.0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LINE_END;
 		bottomPanel.add(bottomRightPanel, c);
 		
-		JLabel creditCardTypeLabel = new JLabel("Credit Card Type:");
-		creditCardTypeLabel.setFont(textFont);
-		creditCardTypeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		l = new JLabel("Placeholder:");
+		l.setFont(textFont);
+		l.setAlignmentX(Component.LEFT_ALIGNMENT);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.weightx = 1.0;
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardTypeLabel, c);
-		
-		creditCardType = new JComboBox<String>(creditCardTypes);
-		creditCardType.setSelectedIndex(0);
-		creditCardType.setFont(textFont);
-		creditCardType.setAlignmentX(Component.LEFT_ALIGNMENT);
-		creditCardType.setPreferredSize(textFieldSize);
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.weightx = 1.0;
-		c.insets = new Insets(0, 0, 20, 0);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardType, c);
-		
-		JLabel creditCardNumberLabel = new JLabel("Credit Card Number:");
-		creditCardNumberLabel.setFont(textFont);
-		creditCardNumberLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 2;
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.weightx = 1.0;
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardNumberLabel, c);
-		
-		creditCardNumberTextField = new JTextField();
-		creditCardNumberTextField.setFont(textFont);
-		creditCardNumberTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-		creditCardNumberTextField.setPreferredSize(textFieldSize);
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.weightx = 1.0;
-		c.insets = new Insets(0, 0, 20, 0);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardNumberTextField, c);
-		
-		JLabel creditCardExpiryLabel = new JLabel("Credit Card Expiry:");
-		creditCardExpiryLabel.setFont(textFont);
-		creditCardExpiryLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 4;
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.weightx = 1.0;
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardExpiryLabel, c);
-		
-		creditCardExpiryMonth = new JComboBox<String>(months);
-		creditCardExpiryMonth.setSelectedIndex(0);
-		creditCardExpiryMonth.setFont(textFont);
-		creditCardExpiryMonth.setAlignmentX(Component.LEFT_ALIGNMENT);
-		creditCardExpiryMonth.setPreferredSize(new Dimension(105, 25));
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 5;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.weightx = 0.5;
-		c.insets = new Insets(0, 0, 20, 0);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardExpiryMonth, c);
-		
-		creditCardExpiryYear = new JComboBox<String>(years);
-		creditCardExpiryYear.setSelectedIndex(0);
-		creditCardExpiryYear.setFont(textFont);
-		creditCardExpiryYear.setAlignmentX(Component.LEFT_ALIGNMENT);
-		creditCardExpiryYear.setPreferredSize(new Dimension(105, 25));
-		c = new GridBagConstraints();
-		c.gridx = 1;
-		c.gridy = 5;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.weightx = 0.5;
-		c.insets = new Insets(0, 0, 20, 0);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.LINE_START;
-		bottomRightPanel.add(creditCardExpiryYear, c);
-		
-		JPanel footer = new JPanel();
-		footer.setLayout(new BorderLayout());
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 2;
-		c.gridwidth = 2;
-		c.gridheight = 1;
 		c.weightx = 1.0;
-		c.insets = new Insets(0, 0, 100, 0);
 		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.CENTER;
-		bottomPanel.add(footer, c);
+		c.anchor = GridBagConstraints.LINE_START;
+		bottomRightPanel.add(l, c);
 		
-		confirmCustomerDetails = new JButton("Confirm");
-		confirmCustomerDetails.setFont(buttonFont);
-		confirmCustomerDetails.setActionCommand("ConfirmCustomerDetails");
-		confirmCustomerDetails.setPreferredSize(largeButtonSize);
-		footer.add(confirmCustomerDetails, BorderLayout.CENTER);
-		*/
 		return orderListPanel;
 	}
 	
@@ -941,19 +895,18 @@ public class NewOrder extends JPanel {
 	public NewOrderDialog dialog;
 	
 	private CardLayout cardLayout;
-	
 	private JPanel orderTypePanel, phoneNumberPanel, customerDetailsPanel, orderListPanel, menuItemPanel, orderSummaryPanel;
-	
-	public JButton backToMainMenuFromOrderTypeScreen, backToMainMenuFromPhoneNumberScreen, backToMainMenuFromCustomerDetailsScreen,
-		backToMainMenuFromOrderListScreen, takeaway, homeDelivery, confirmPhoneNumber, confirmCustomerDetails;
-	public JTextField phoneNumberTextField, addressTextField, creditCardNumberTextField;
+	public JButton backToMainMenuFromOrderTypeScreen, backToMainMenuFromPhoneNumberScreen, backToMainMenuFromCustomerDetailsScreen, backToMainMenuFromOrderListScreen,
+		takeaway, homeDelivery, confirmPhoneNumber, confirmCustomerDetails, searchMenuByNumber;
+	public JTextField phoneNumberTextField, addressTextField, creditCardNumberTextField, menuSearchTextField;
 	public JLabel phoneNumberText, phoneNumberOrderScreen, addressOrderScreen, creditCardDetailsOrderScreen;
 	public JComboBox creditCardType, creditCardExpiryMonth, creditCardExpiryYear;
 	private String[] creditCardTypes;
 	private String[] months;
 	private String[] years;
-	
-	private Dimension backButtonSize, largeButtonSize, textFieldSize, smallTextFieldSize, largeLabelSize;
+	public JList<Database.Item> menuList;
+	public DefaultListModel<Database.Item> menuListModel; 
+	private Dimension backButtonSize, smallButtonSize, largeButtonSize, textFieldSize, smallTextFieldSize, largeLabelSize;
 
 	public NewOrder(StyleSettings styleSettings, Database.Item[] menu) {
 		super();
@@ -963,6 +916,7 @@ public class NewOrder extends JPanel {
 		this.dialog = new NewOrderDialog(this);
 		this.backButtonSize = new Dimension(65, 25);
 		this.largeButtonSize = new Dimension(120, 50);
+		this.smallButtonSize = new Dimension(75, 24);
 		this.textFieldSize = new Dimension(300, 25);
 		this.smallTextFieldSize = new Dimension(200, 25);
 		this.largeLabelSize = new Dimension(200, 50);
