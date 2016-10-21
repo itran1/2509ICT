@@ -3,7 +3,7 @@ package Database;
 import java.util.*;
 
 /**
- * The Class Order.
+ * The Order Class .
  * @author Sean Doran, Christain Miles, David Moschner and Ian Tran
  */
 public class Order {
@@ -26,10 +26,10 @@ TAKEAWAY,
 	/** The customer. */
 	private Customer customer;
 	
-	/** The total. */
+	/** The total price of all orders. */
 	private int total = 0; //Instantiated as to avoid null
 	
-	/** The date. */
+	/** The date of the order. */
 	private String date;
 	
 	/**
@@ -43,10 +43,10 @@ TAKEAWAY,
 	/**
 	 * Instantiates a new order.
 	 *
-	 * @param date the date
+	 * @param date The date
 	 * @param orderType the order type
-	 * @param total the total
-	 * @param customer the customer
+	 * @param total The total
+	 * @param customer The customer
 	 */
 	//Made for database reinitialisation
 	public Order(String date, String orderType, int total, Customer customer){
@@ -58,18 +58,18 @@ TAKEAWAY,
 	}
 	
 	/**
-	 * Gets the total.
+	 * Gets the daily total of orders.
 	 *
-	 * @return the total
+	 * @return The total
 	 */
 	public int getTotal(){
 		return this.total;
 	}
 	
 	/**
-	 * Compute total.
+	 * Computes the daily total of orders.
 	 *
-	 * @return the int
+	 * @return The int
 	 */
 	public int computeTotal(){
 		int total = 0;
@@ -86,8 +86,8 @@ TAKEAWAY,
 	/**
 	 * Adds the item.
 	 *
-	 * @param item the item
-	 * @param q the q
+	 * @param item The item
+	 * @param q The quantity
 	 */
 	public void addItem(Item item, int q){
 		items.put(item, q);
@@ -96,7 +96,7 @@ TAKEAWAY,
 	/**
 	 * Removes the item.
 	 *
-	 * @param item the item
+	 * @param item The item
 	 */
 	public void removeItem(Item item){
 		items.remove(item);
@@ -106,7 +106,7 @@ TAKEAWAY,
 	 * Gets the quantity.
 	 *
 	 * @param item the item
-	 * @return the quantity
+	 * @return The quantity of the item needed for the order
 	 */
 	public int getQuantity(Item item){
 		return 	items.get(item);
@@ -116,41 +116,41 @@ TAKEAWAY,
 	 * Sets the quantity.
 	 *
 	 * @param item the item
-	 * @param q the q
+	 * @param q The quantity
 	 */
 	public void setQuantity(Item item, int q) {
 		items.put(item, q);
 	}
 	
 	/**
-	 * Clear order.
+	 * Removes all items from the order.
 	 */
 	public void clearOrder(){
 		items.clear();
 	}
 	
 	/**
-	 * Gets the order type.
+	 * Gets the type order. the order Type being TAKEAWAY or HOME_DELIVERY
 	 *
-	 * @return the order type
+	 * @return The order type
 	 */
 	public OrderType getOrderType() {
 		return this.orderType;
 	}
 	
 	/**
-	 * Sets the order type.
+	 * Sets the type order . the order Type being TAKEAWAY or HOME_DELIVERY
 	 *
-	 * @param orderType the new order type
+	 * @param orderType The new order type
 	 */
 	public void setOrderType(OrderType orderType) {
 		this.orderType = orderType;
 	}
 	
 	/**
-	 * Sets the date.
+	 * Sets the date as a String. 
 	 *
-	 * @param date the new date
+	 * @param date The new date
 	 */
 	public void setDate(String date){
 		this.date = date;
@@ -159,7 +159,7 @@ TAKEAWAY,
 	/**
 	 * Gets the customer.
 	 *
-	 * @return the customer
+	 * @return The customer
 	 */
 	public Customer getCustomer(){
 		return this.customer;
